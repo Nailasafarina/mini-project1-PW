@@ -1,36 +1,63 @@
-# Blueprint: Arsitektur Product Information System
+Blueprint Arsitektur Logis: Product Information System
 
-Dokumen ini berisi rancangan cetak biru (blueprint) konseptual untuk Product Information System, menggunakan prinsip *Separation of Concerns* untuk memisahkan data, logika pemrosesan, dan tampilan antarmuka.
+Mata Kuliah: Pemrograman Web - Pertemuan 2
+Fokus: Pemrosesan Server-Side, Manajemen Data Kolektif, dan Desain Modular
+Status: Desain Konseptual (Tanpa Pengetikan Kode)
 
-## 1. Data Layer (`products.php`)
-Lapisan ini berfungsi sebagai media penyimpanan data (simulasi *database*) di dalam memori.
-- **Struktur Penyimpanan**: Menggunakan tipe data *Multidimensional Array*. 
-- **Mekanisme**: Indeks utama menggunakan struktur berurutan (*Indexed Array*) untuk memisahkan setiap baris produk. Di dalamnya, detail produk disimpan menggunakan *Associative Array* agar setiap data memiliki label/kata kunci yang jelas.
-- **Atribut Komoditas yang Disimpan**:
-  - `ID`: Identitas unik produk
-  - `Nama`: Nama komoditas/produk
-  - `Kategori`: Klasifikasi jenis produk
-  - `Harga`: Nilai jual produk
-  - `Stok`: Jumlah ketersediaan barang di gudang
-  - `Deskripsi`: Keterangan detail mengenai produk
+1. Data Layer (products.php)
 
-## 2. Processing Layer (`functions.php`)
-Lapisan ini didedikasikan murni untuk merangkum seluruh aturan logika bisnis (*Single Responsibility Principle*).
-- **Fungsi `hitungTotalNilaiStok()`**:
-  - **Tujuan**: Mengalkulasi nilai aset dari sebuah produk yang ada di gudang.
-  - **Parameter Input**: Harga dan Stok produk.
-  - **Proses**: Melakukan operasi perkalian antara Harga dan Stok.
-  - **Return Value**: Mengembalikan total nilai aset secara angka.
-- **Logika Kondisional (Penyaring Stok Kritis)**:
-  - **Mekanisme**: Menggunakan struktur percabangan `if-else`.
-  - **Kondisi Evaluasi**: Memeriksa nilai atribut `Stok`. Jika `Stok < 3` (bernilai `true`), maka logika ini akan menghasilkan *output* modifikasi visual (seperti memberikan instruksi perubahan warna pada baris tabel HTML) untuk menandakan bahwa stok berstatus kritis.
+Fungsi: Bertindak sebagai repositori penyimpanan data simulasi di dalam memori (pengganti basis data sementara).
+Struktur Data: Menggunakan Multidimensional Array (Kombinasi dari Indexed Array luar dan Associative Array di bagian dalam).
 
-## 3. Presentation Layer (`index.php`)
-Lapisan antarmuka utama yang bertugas merajut seluruh komponen sistem dan menampilkannya kepada pengguna (klien).
-- **Integrasi Modular**:
-  - Memanggil *file* data menggunakan perintah `require_once 'products.php'`.
-  - Memanggil *file* logika menggunakan perintah `require_once 'functions.php'`.
-  - *Alasan menggunakan `require_once`*: Memastikan sistem menerapkan level toleransi nol; jika berkas penyusun ini hilang, sistem harus berhenti total (*Fatal Error*) untuk mencegah kebocoran proses atau data yang tidak valid.
-- **Render Tampilan**:
-  - Mengeksekusi perulangan `foreach` untuk melakukan *traversal* (penelusuran) isi *Multidimensional Array* yang berasal dari Data Layer.
-  - Setiap putaran iterasi akan merender tag baris tabel (`<tr>`) dan kolom (`<td>`) HTML yang akan memuat data: ID, Nama, Kategori, Harga, Stok, Deskripsi, dan hasil kalkulasi Total Nilai Stok.
+Spesifikasi Entitas Produk:
+Setiap produk di dalam sistem dirancang sebagai satu objek array yang wajib memiliki atribut (key) semantik berikut:
+
+ID (String/Integer): Identitas unik produk (contoh: PROD-01).
+
+Nama (String): Nama komoditas produk.
+
+Kategori (String): Klasifikasi jenis produk (contoh: Elektronik, Pakaian).
+
+Harga (Integer/Float): Nilai jual satuan produk.
+
+Stok (Integer): Jumlah ketersediaan barang di gudang.
+
+Deskripsi (String): Penjelasan singkat mengenai produk.
+
+2. Processing Layer (functions.php)
+
+Fungsi: Mengabstraksi dan mengisolasi seluruh logika bisnis sistem ke dalam unit-unit modular agar rapi dan dapat digunakan kembali (reusable).
+
+Komponen Logika & Aturan Bisnis:
+
+Fungsi hitungTotalNilaiStok():
+
+Input (Parameter): Menerima variabel nilai Harga dan Stok barang.
+
+Proses Kalkulasi: Melakukan operasi aritmatika perkalian (Harga dikali Stok).
+
+Output (Return): Mengembalikan data total nilai aset inventori untuk produk tersebut.
+
+Logika Peringatan Stok Kritis (Conditional Logic):
+
+Kondisi: Struktur kontrol if-else yang menyeleksi nilai atribut Stok.
+
+Aturan Evaluasi: Jika nilai Stok < 3 (kurang dari tiga), maka kondisi terpenuhi (true).
+
+Tindakan: Sistem akan menyuntikkan flag atau penanda (seperti nama kelas CSS khusus) yang nantinya akan ditangkap oleh Presentation Layer untuk mengubah warna baris tabel.
+
+3. Presentation Layer (index.php)
+
+Fungsi: Lapisan antarmuka utama yang bertugas merajut file dari layer lain dan mempresentasikan data ke dalam struktur UI HTML yang dipahami pengguna.
+
+Alur Kerja Konseptual (Sistem Render):
+
+Inisialisasi Keamanan Tinggi: Dokumen diawali dengan perintah require_once untuk memanggil products.php dan functions.php. Jika file gagal dimuat, sistem akan Fatal Error dan berhenti, mencegah UI dirender tanpa data/logika.
+
+Persiapan UI: Membuka kerangka dasar tabel HTML dengan kolom yang merepresentasikan spesifikasi produk.
+
+Data Traversal (Navigasi Array): Menggunakan perulangan foreach untuk membedah multidimensional array produk satu demi satu tanpa takut terjadi infinite loop.
+
+Render Atribut: Memasukkan variabel data per item (seperti Nama, Kategori) ke dalam sel tabel HTML.
+
+Eksekusi Logika Lanjutan: Memanggil fungsi hitungTotalNilaiStok() pada sel terakhir tabel, serta mengevaluasi variabel stok untuk mewarnai baris (misal: warna merah) apabila masuk kategori kritis.    

@@ -1,22 +1,28 @@
-# Product Information System - Mini Project
+Mini Project 1: Product Information System (Desain)
 
-## Deskripsi Proyek
-Proyek ini adalah implementasi konsep arsitektur *server-side* PHP menggunakan prinsip pemrograman modular (*Separation of Concerns*). Mini project ini secara khusus difokuskan pada pematangan rancangan cetak biru (blueprint) konseptual tanpa adanya penulisan eksekusi kode (*Sesi Tanpa Coding*), sesuai dengan pedoman pembelajaran teori PHP Fundamental.
+Deskripsi Proyek
 
-## Arsitektur Sistem
-Sistem ini memecah struktur program menjadi tiga komponen independen yang saling bekerja sama:
-1. **Data Layer** (Disimulasikan pada `products.php`): Menyimpan *multidimensional array* yang memuat atribut spesifik produk (ID, Nama, Kategori, Harga, Stok, Deskripsi).
-2. **Processing Layer** (`functions.php`): Mengisolasi seluruh operasional logika bisnis, termasuk fungsi kalkulasi total nilai aset (`hitungTotalNilaiStok()`) dan logika kondisional bersyarat untuk penandaan peringatan stok kritis (< 3).
-3. **Presentation Layer** (`index.php`): Halaman antarmuka utama yang bertugas merajut keseluruhan sistem menggunakan instruksi `require_once` dan mengeksekusi navigasi data menggunakan perulangan `foreach` ke dalam struktur tabel HTML.
+Proyek ini merupakan tugas konseptual dari Mata Kuliah Pemrograman Web (Pertemuan 2: PHP Fundamental). Sistem ini dirancang untuk mendemonstrasikan pemahaman mengenai manajemen data terstruktur dan arsitektur modular pada lingkungan pemrosesan server-side. Proyek dipecah berlandaskan metode Separation of Concerns.
 
-## Teknologi & Konsep Teori Terapan
-- Arsitektur *Server-Side Processing*
-- Manajemen Data Kompleks: *Multidimensional & Associative Array*
-- *Modular Programming* (Penggunaan `require_once` ber-toleransi nol)
-- *Logic Control & Traversal Data* (`if-else`, `foreach`)
-- *Single Responsibility Principle* pada fungsi logika bisnis
+Tujuan Pembelajaran Utama
 
-## Cara Penggunaan (Panduan Konseptual)
-1. Siapkan struktur direktori yang berisi tiga *file* secara terpisah (`products.php`, `functions.php`, dan `index.php`).
-2. *File* `index.php` secara eksklusif akan bertindak sebagai *entry point* (titik masuk) sistem yang akan menarik data dan fungsi dari dua *file* lainnya.
-3. Akses *file* `index.php` melalui peramban web (disimulasikan melalui *local server*) untuk melihat hasil render tabel katalog informasi produk.
+Merancang arsitektur sistem berbasis file terpisah untuk meminimalisasi redundansi kode.
+
+Merancang cetak biru representasi data menggunakan multidimensional array.
+
+Menganalisis dan menyusun logika bisnis dasar (seperti kalkulasi matematis dan kondisional) yang terisolasi dalam satu unit fungsi.
+
+Anatomi Arsitektur (Separation of Concerns)
+
+Proyek ini dipecah ke dalam tiga lapisan (layers), yaitu:
+
+products.php (Data Layer): Wadah pendefinisian array kompleks untuk menyimpan daftar spesifikasi komoditas.
+
+functions.php (Processing Layer): Wadah khusus fungsi operasional bisnis dan evaluasi logika.
+
+index.php (Presentation Layer): Pusat navigasi data (traversal) sekaligus perender tata letak tampilan (layout) web.
+
+Perhatian Khusus
+
+⚠️ Sesi Tanpa Coding (Logical Blueprint Only)
+Mengacu pada instruksi modul praktikum, evaluasi pengerjaan proyek mini ini difokuskan sepenuhnya pada pemahaman logika perancangan cetak biru (blueprint) arsitektur sistem. Pada sesi ini, tidak ada penulisan skrip atau coding PHP aktual yang ditugaskan.
